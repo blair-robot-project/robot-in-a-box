@@ -83,8 +83,13 @@ public class Robot extends IterativeRobot {
 		//Read sensors
 		robotMap.getUpdater().run();
 
-		//Start logging
-		loggerNotifier.startPeriodic(robotMap.getLogger().getLoopTimeSecs());
+		//Run startup command
+		if (robotMap.getStartupCommand() != null){
+			robotMap.getStartupCommand().getCommand().start();
+		}
+
+		//Log
+		loggerNotifier.startSingle(0);
 	}
 
 	/**
@@ -100,5 +105,8 @@ public class Robot extends IterativeRobot {
 
 		//Run all commands. This is a WPILib thing you don't really have to worry about.
 		Scheduler.getInstance().run();
+
+		//Log
+		loggerNotifier.startSingle(0);
 	}
 }

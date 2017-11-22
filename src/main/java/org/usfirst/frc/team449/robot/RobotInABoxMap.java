@@ -3,7 +3,10 @@ package org.usfirst.frc.team449.robot;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.usfirst.frc.team449.robot.jacksonWrappers.MappedRunnable;
+import org.usfirst.frc.team449.robot.jacksonWrappers.YamlCommand;
+import org.usfirst.frc.team449.robot.jacksonWrappers.YamlSubsystem;
 import org.usfirst.frc.team449.robot.oi.buttons.CommandButton;
 import org.usfirst.frc.team449.robot.other.Logger;
 
@@ -33,19 +36,37 @@ public class RobotInABoxMap {
 	private final Runnable updater;
 
 	/**
+	 * The command to run when the robot is first enabled. Can be null to not run a command.
+	 */
+	@Nullable
+	private final YamlCommand startupCommand;
+
+	/**
+	 * Subsystems that don't go anywhere else.
+	 */
+	@Nullable
+	private final List<YamlSubsystem> variousSubsystems;
+
+	/**
 	 * Default constructor.
 	 *
 	 * @param buttons The buttons for controlling this robot.
 	 * @param logger  The logger for recording events and telemetry data.
 	 * @param updater A runnable that updates cached variables.
+	 * @param startupCommand The command to run when the robot is first enabled. Can be null to not run a command.
+	 * @param variousSubsystems Subsystems that don't go anywhere else.
 	 */
 	@JsonCreator
 	public RobotInABoxMap(@NotNull @JsonProperty(required = true) List<CommandButton> buttons,
-						  @NotNull @JsonProperty(required = true) Logger logger,
-						  @NotNull @JsonProperty(required = true) MappedRunnable updater) {
+	                      @NotNull @JsonProperty(required = true) Logger logger,
+	                      @NotNull @JsonProperty(required = true) MappedRunnable updater,
+	                      @Nullable YamlCommand startupCommand,
+	                      @Nullable List<YamlSubsystem> variousSubsystems) {
 		this.buttons = buttons;
 		this.logger = logger;
 		this.updater = updater;
+		this.startupCommand = startupCommand;
+		this.variousSubsystems = variousSubsystems;
 	}
 
 	/**
@@ -70,5 +91,13 @@ public class RobotInABoxMap {
 	@NotNull
 	public Runnable getUpdater() {
 		return updater;
+	}
+
+	/**
+	 * @return The command to run when the robot is first enabled. Can be null to not run a command.
+	 */
+	@Nullable
+	public YamlCommand getStartupCommand() {
+		return startupCommand;
 	}
 }

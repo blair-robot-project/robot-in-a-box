@@ -29,6 +29,12 @@ public class AnalogMotorSimple extends YamlSubsystem implements SubsystemAnalogM
     @Nullable
     private final Command defaultCommand;
 
+    /**
+     * Default constructor.
+     *
+     * @param motor The motor this subsystem controls.
+     * @param defaultCommand The default command to run. Can be null to not have a default command.
+     */
     @JsonCreator
     public AnalogMotorSimple(@NotNull @JsonProperty(required = true) SimpleMotor motor,
                              @Nullable YamlCommand defaultCommand) {
