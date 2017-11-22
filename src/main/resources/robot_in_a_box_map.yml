@@ -1,0 +1,78 @@
+---
+logger:
+    '@id': logger
+    subsystems:
+        -   org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.BinaryMotorGoToPosChangePID:
+                '@id': binaryMotorSubsystem
+                pInput:
+                    org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
+                        &pInput
+                        '@id': pInput
+                        port: 0
+                        oversampleBits: 4
+                        averageBits: 2
+                iInput:
+                    org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
+                        <<: *pInput
+                        '@id': iInput
+                        port: 1
+                dInput:
+                    org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
+                        <<: *pInput
+                        '@id': dInput
+                        port: 2
+                talon:
+                    org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalonPIDExposed:
+                        '@id': talon
+                        port: 10
+                        reverseOutput: false
+                        reverseSensor: true
+                        enableBrakeMode: false
+                        maxClosedLoopVoltage: 6
+                        feedbackDevice: QuadEncoder
+                        encoderCPR: 512
+                        currentLimit: 20
+                        perGearSettings:
+                            -   fwdPeakOutputVoltage: 6
+                                maxSpeed: 0
+                                kP: 7.5
+                                kI: 0.08
+                                kD: 180
+    loopTimeSecs: 0.5
+    eventLogFilename: "/home/lvuser/logs/eventLog-"
+    telemetryLogFilename: "/home/lvuser/logs/telemetryLog-"
+buttons:
+    -   button:
+            org.usfirst.frc.team449.robot.oi.buttons.ButtonDigitalInput:
+                '@id': DIButton
+                input:
+                    '@id': onOffSwitch
+                    ports:
+                        - 0
+        command:
+            org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.commands.TurnMotorOn:
+                '@id': turnOn
+                subsystem:
+                    org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.BinaryMotorGoToPosChangePID:
+                        binaryMotorSubsystem
+        action: WHEN_PRESSED
+    -   button:
+            org.usfirst.frc.team449.robot.oi.buttons.ButtonDigitalInput:
+                DIButton
+        command:
+            org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.commands.TurnMotorOff:
+                '@id': turnOff
+                subsystem:
+                    org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.BinaryMotorGoToPosChangePID:
+                        binaryMotorSubsystem
+        action: WHEN_RELEASED
+updater:
+    org.usfirst.frc.team449.robot.other.Updater:
+        '@id': updater
+        updatables:
+            - org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
+                pInput
+            - org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
+                iInput
+            - org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
+                dInput
