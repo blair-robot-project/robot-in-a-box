@@ -42,7 +42,7 @@ public class JetsonPoseReceiver {
 		this.poseEstimator = poseEstimator;
 		ZMQ.Context context = ZMQ.context(1);
 		socket = context.socket(ZMQ.PAIR);
-		socket.bind("10.4.49.2:5555");
+		socket.bind("tcp://10.4.49.2:5555");
 	}
 
 	/**
