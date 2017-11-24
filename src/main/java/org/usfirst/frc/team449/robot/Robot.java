@@ -68,6 +68,9 @@ public class Robot extends IterativeRobot {
 		//Set fields from the map.
 		this.loggerNotifier = new Notifier(robotMap.getLogger());
 
+		//Start running the pose receiver.
+		new Thread(robotMap.getPoseReceiverRunner()).start();
+
 		//Log after init
 		robotMap.getLogger().run();
 	}

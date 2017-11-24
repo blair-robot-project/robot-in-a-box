@@ -47,6 +47,9 @@ public class RobotInABoxMap {
 	@Nullable
 	private final List<YamlSubsystem> variousSubsystems;
 
+	@Nullable
+	private final Runnable poseReceiverRunner;
+
 	/**
 	 * Default constructor.
 	 *
@@ -61,12 +64,14 @@ public class RobotInABoxMap {
 	                      @NotNull @JsonProperty(required = true) Logger logger,
 	                      @NotNull @JsonProperty(required = true) MappedRunnable updater,
 	                      @Nullable YamlCommand startupCommand,
-	                      @Nullable List<YamlSubsystem> variousSubsystems) {
+	                      @Nullable List<YamlSubsystem> variousSubsystems,
+	                      @Nullable MappedRunnable poseReceiverRunner) {
 		this.buttons = buttons;
 		this.logger = logger;
 		this.updater = updater;
 		this.startupCommand = startupCommand;
 		this.variousSubsystems = variousSubsystems;
+		this.poseReceiverRunner = poseReceiverRunner;
 	}
 
 	/**
@@ -99,5 +104,10 @@ public class RobotInABoxMap {
 	@Nullable
 	public YamlCommand getStartupCommand() {
 		return startupCommand;
+	}
+
+	@Nullable
+	public Runnable getPoseReceiverRunner() {
+		return poseReceiverRunner;
 	}
 }

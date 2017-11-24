@@ -25,6 +25,7 @@ public class JetsonPoseReceiver {
 	/**
 	 * The socket the Jetson is sending info over.
 	 */
+	@NotNull
 	private final ZMQ.Socket socket;
 
 	/**
@@ -36,13 +37,15 @@ public class JetsonPoseReceiver {
 	 * Default constructor.
 	 *
 	 * @param poseEstimator The pose estimator this is sending the camera pose to.
+	 * @param address The address of the port on the RIO to open.
 	 */
 	@JsonCreator
-	public JetsonPoseReceiver(@NotNull @JsonProperty(required = true) UnidirectionalPoseEstimator poseEstimator){
+	public JetsonPoseReceiver(@NotNull @JsonProperty(required = true) UnidirectionalPoseEstimator poseEstimator,
+	                          @NotNull @JsonProperty(required = true) String address){
 		this.poseEstimator = poseEstimator;
 		ZMQ.Context context = ZMQ.context(1);
 		socket = context.socket(ZMQ.PAIR);
-		socket.bind("tcp://10.4.49.2:5555");
+		socket.bind(address);
 	}
 
 	/**
