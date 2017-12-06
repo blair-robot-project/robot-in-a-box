@@ -47,6 +47,9 @@ public class RobotInABoxMap {
 	@Nullable
 	private final List<YamlSubsystem> variousSubsystems;
 
+	/**
+	 * An object to run the pose receiver and feed its output to a pose estimator.
+	 */
 	@Nullable
 	private final Runnable poseReceiverRunner;
 
@@ -58,6 +61,7 @@ public class RobotInABoxMap {
 	 * @param updater A runnable that updates cached variables.
 	 * @param startupCommand The command to run when the robot is first enabled. Can be null to not run a command.
 	 * @param variousSubsystems Subsystems that don't go anywhere else.
+	 * @param poseReceiverRunner An object to run the pose receiver and feed its output to a pose estimator.
 	 */
 	@JsonCreator
 	public RobotInABoxMap(@NotNull @JsonProperty(required = true) List<CommandButton> buttons,
@@ -106,6 +110,9 @@ public class RobotInABoxMap {
 		return startupCommand;
 	}
 
+	/**
+	 * @return An object to run the pose receiver and feed its output to a pose estimator.
+	 */
 	@Nullable
 	public Runnable getPoseReceiverRunner() {
 		return poseReceiverRunner;

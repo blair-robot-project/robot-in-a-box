@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import org.jetbrains.annotations.NotNull;
 import org.usfirst.frc.team449.robot.components.PathRequester;
 import org.usfirst.frc.team449.robot.other.Clock;
-import org.usfirst.frc.team449.robot.other.LoadableMotionProfileData;
+import org.usfirst.frc.team449.robot.other.MotionProfileData;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileReader;
@@ -118,7 +118,7 @@ public class Robot extends IterativeRobot {
 		//Run all commands. This is a WPILib thing you don't really have to worry about.
 		Scheduler.getInstance().run();
 
-		LoadableMotionProfileData[] data = pathRequester.getPath(false, true);
+		MotionProfileData[] data = pathRequester.getPath(false, true);
 		if (data != null) {
 			System.out.println(Arrays.deepToString(data[0].getData()));
 		} else {

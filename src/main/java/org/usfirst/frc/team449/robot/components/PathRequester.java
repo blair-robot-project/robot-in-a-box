@@ -1,10 +1,13 @@
 package org.usfirst.frc.team449.robot.components;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.usfirst.frc.team449.robot.other.LoadableMotionProfileData;
+import org.usfirst.frc.team449.robot.other.MotionProfileData;
 import org.zeromq.ZMQ;
 import proto.PathOuterClass;
 import proto.PathRequestOuterClass;
@@ -12,6 +15,7 @@ import proto.PathRequestOuterClass;
 /**
  * The object that requests a motion profile from the Jetson.
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
 public class PathRequester {
 
 	/**
@@ -40,6 +44,7 @@ public class PathRequester {
 	 *
 	 * @param address The address of the port on the RIO to open.
 	 */
+	@JsonCreator
 	public PathRequester(@NotNull @JsonProperty(required = true) String address) {
 		ZMQ.Context context = ZMQ.context(1);
 		socket = context.socket(ZMQ.REQ);
@@ -70,7 +75,7 @@ public class PathRequester {
 	 * profiles in that order otherwise.
 	 */
 	@Nullable
-	public LoadableMotionProfileData[] getPath(boolean inverted, boolean resetPosition) {
+	public MotionProfileData[] getPath(boolean inverted, boolean resetPosition) {
 		//Read from Jetson
 		output = socket.recv(ZMQ.NOBLOCK);
 		if (output == null) {
@@ -78,15 +83,15 @@ public class PathRequester {
 		}
 
 		//Make these local variables and not fields so that this thread doesn't retain any connection to it.
-		LoadableMotionProfileData leftMotionProfileData, rightMotionProfileData = null;
+		MotionProfileData leftMotionProfileData, rightMotionProfileData = null;
 
 		try {
 			//Read the response
 			path = path.getParserForType().parseFrom(output);
-			leftMotionProfileData = new LoadableMotionProfileData(path.getPosLeftList(), path.getVelLeftList(),
+			leftMotionProfileData = new MotionProfileData(path.getPosLeftList(), path.getVelLeftList(),
 					path.getAccelLeftList(), path.getDeltaTime(), inverted, false, resetPosition);
 			if (path.getPosRightCount() != 0) {
-				rightMotionProfileData = new LoadableMotionProfileData(path.getPosRightList(), path.getVelRightList(),
+				rightMotionProfileData = new MotionProfileData(path.getPosRightList(), path.getVelRightList(),
 						path.getAccelRightList(), path.getDeltaTime(), inverted, false, resetPosition);
 			}
 		} catch (InvalidProtocolBufferException e) {
@@ -97,9 +102,9 @@ public class PathRequester {
 
 		//Return stuff
 		if (rightMotionProfileData == null) {
-			return new LoadableMotionProfileData[]{leftMotionProfileData};
+			return new MotionProfileData[]{leftMotionProfileData};
 		} else {
-			return new LoadableMotionProfileData[]{leftMotionProfileData, rightMotionProfileData};
+			return new MotionProfileData[]{leftMotionProfileData, rightMotionProfileData};
 		}
 	}
 }
