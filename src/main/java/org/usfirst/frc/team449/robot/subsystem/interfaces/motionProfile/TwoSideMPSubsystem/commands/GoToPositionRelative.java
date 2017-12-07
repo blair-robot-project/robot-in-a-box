@@ -15,7 +15,7 @@ import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.commands
  * A command that drives the given subsystem to a position relative to the current position.
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
-public class GoToRelativePosition <T extends YamlSubsystem & SubsystemMPTwoSides> extends YamlCommandGroupWrapper{
+public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides> extends YamlCommandGroupWrapper{
 
 	/**
 	 * Default constructor.
@@ -24,7 +24,7 @@ public class GoToRelativePosition <T extends YamlSubsystem & SubsystemMPTwoSides
 	 * @param subsystem The subsystem to run the path gotten from the Jetson on.
 	 */
 	@JsonCreator
-	public GoToRelativePosition(@NotNull @JsonProperty(required = true) GetPathFromJetson getPath,
+	public GoToPositionRelative(@NotNull @JsonProperty(required = true) GetPathFromJetson getPath,
 	                            @NotNull @JsonProperty(required = true) T subsystem){
 		addSequential(getPath.getCommand());
 		if(getPath.getMotionProfileData().length == 1){
