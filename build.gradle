@@ -1,13 +1,20 @@
+import jaci.openrio.gradle.GradleRIOPlugin
+import jaci.openrio.gradle.frc.FRCJavaArtifact
+import jaci.openrio.gradle.frc.RoboRIO
+
 plugins {
     id 'org.hidetake.ssh' version "2.9.0"
     id 'java'
     id 'eclipse'
     id 'idea'
-    id 'jaci.openrio.gradle.GradleRIO' version "2017.1.5"
+    id 'jaci.openrio.gradle.GradleRIO' version "2017.11.27"
 }
 
 group 'org.usfirst.frc.team449.robot-in-a-box'
 version '1.0'
+
+def TEAM = 449
+def ROBOT_CLASS = "org.usfirst.frc.team449.robot.Robot"
 
 repositories {
     mavenCentral()
@@ -25,8 +32,11 @@ wpi {
     ntcoreVersion = "3.1.7"         // The NetworkTables Core version to use.
     opencvVersion = "3.1.0"         // The OpenCV version to use.
     cscoreVersion = "1.0.2"         // The CSCore version to use.
-    talonSrxVersion = "4.4.1.14"    // The CTRE Toolsuite (Talon SRX) version to use.
+    wpiutilVersion = "1.0.2"
+    ctreVersion = "4.4.1.14"    // The CTRE Toolsuite (Talon SRX) version to use.
     navxVersion = "3.0.331"         // The NavX-MXP library version to use.
+    smartDashboardVersion = '2.0.4'
+    javaInstallerVersion = '2.0.3'
 }
 
 dependencies {
@@ -42,27 +52,17 @@ dependencies {
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-parameter-names', version: '2.9.0.pr3'
     compile 'org.jetbrains:annotations:13.0'
     compile wpilib()
-    compile talonSrx()
+    compile ctre()
     compile navx()
 }
 
-/* GradleRIO stuff */
+/* ssh stuff */
 remotes {
     rio {
         host = 'roboRIO-449-frc.local'
         user = 'lvuser'
         knownHosts = allowAnyHosts
     }
-}
-
-frc {
-    team = '449'
-    robotClass = "org.usfirst.frc.team449.robot.Robot"
-}
-
-def robotManifest = {
-    attributes 'Main-Class': 'edu.wpi.first.wpilibj.RobotBase'
-    attributes 'Robot-Class': frc.robotClass
 }
 
 task('copyResources') {
@@ -78,10 +78,22 @@ task('copyResources') {
     }
 }
 
-/* Generic artifact gen stuff */
+deploy {
+    targets {
+        target("roborio", RoboRIO) {
+            team = TEAM
+        }
+    }
+    artifacts {
+        artifact('frcJava', FRCJavaArtifact) {
+            targets << "roborio"
+        }
+    }
+}
+
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest robotManifest
+    manifest GradleRIOPlugin.javaManifest(ROBOT_CLASS)
 }
 
 task genJavadoc(type: Jar, dependsOn: javadoc) {
