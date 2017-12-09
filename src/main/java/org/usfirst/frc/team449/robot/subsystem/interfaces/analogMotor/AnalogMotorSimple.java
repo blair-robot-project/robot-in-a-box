@@ -15,7 +15,7 @@ import org.usfirst.frc.team449.robot.jacksonWrappers.YamlSubsystem;
  * A simple analogMotor that uses velocity.
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
-public class AnalogMotorSimple extends YamlSubsystem implements SubsystemAnalogMotor{
+public class AnalogMotorSimple extends YamlSubsystem implements SubsystemAnalogMotor {
 
     /**
      * The motor this subsystem controls.
@@ -32,7 +32,7 @@ public class AnalogMotorSimple extends YamlSubsystem implements SubsystemAnalogM
     /**
      * Default constructor.
      *
-     * @param motor The motor this subsystem controls.
+     * @param motor          The motor this subsystem controls.
      * @param defaultCommand The default command to run. Can be null to not have a default command.
      */
     @JsonCreator
@@ -47,7 +47,7 @@ public class AnalogMotorSimple extends YamlSubsystem implements SubsystemAnalogM
      */
     @Override
     protected void initDefaultCommand() {
-        if(defaultCommand != null){
+        if (defaultCommand != null) {
             setDefaultCommand(defaultCommand);
         }
     }

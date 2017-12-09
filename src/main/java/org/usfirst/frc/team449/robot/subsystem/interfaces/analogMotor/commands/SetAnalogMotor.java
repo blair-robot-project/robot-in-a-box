@@ -15,69 +15,69 @@ import org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.SubsystemA
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
 public class SetAnalogMotor extends YamlCommandWrapper {
 
-	/**
-	 * The subsystem to execute this command on.
-	 */
-	@NotNull
-	private final SubsystemAnalogMotor subsystem;
+    /**
+     * The subsystem to execute this command on.
+     */
+    @NotNull
+    private final SubsystemAnalogMotor subsystem;
 
-	/**
-	 * The setpoint to run the motor at.
-	 */
-	private final double setpoint;
-	
-	/**
-	 * Default constructor
-	 *
-	 * @param subsystem The subsystem to execute this command on.
-	 * @param setpoint The setpoint to run the motor at.
-	 */
-	@JsonCreator
-	public SetAnalogMotor(@NotNull @JsonProperty(required = true) SubsystemAnalogMotor subsystem,
-	                          @JsonProperty(required = true) double setpoint) {
-		this.subsystem = subsystem;
-		this.setpoint = setpoint;
-	}
+    /**
+     * The setpoint to run the motor at.
+     */
+    private final double setpoint;
 
-	/**
-	 * Log when this command is initialized
-	 */
-	@Override
-	protected void initialize() {
-		Logger.addEvent("DisableAnalogMotor init.", this.getClass());
-	}
+    /**
+     * Default constructor
+     *
+     * @param subsystem The subsystem to execute this command on.
+     * @param setpoint  The setpoint to run the motor at.
+     */
+    @JsonCreator
+    public SetAnalogMotor(@NotNull @JsonProperty(required = true) SubsystemAnalogMotor subsystem,
+                          @JsonProperty(required = true) double setpoint) {
+        this.subsystem = subsystem;
+        this.setpoint = setpoint;
+    }
 
-	/**
-	 * Set the setpoint.
-	 */
-	@Override
-	protected void execute() {
-		subsystem.set(setpoint);
-	}
+    /**
+     * Log when this command is initialized
+     */
+    @Override
+    protected void initialize() {
+        Logger.addEvent("DisableAnalogMotor init.", this.getClass());
+    }
 
-	/**
-	 * Finish immediately because this is a state-change command.
-	 *
-	 * @return true
-	 */
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    /**
+     * Set the setpoint.
+     */
+    @Override
+    protected void execute() {
+        subsystem.set(setpoint);
+    }
 
-	/**
-	 * Log when this command ends
-	 */
-	@Override
-	protected void end() {
-		Logger.addEvent("SetAnalogMotor end.", this.getClass());
-	}
+    /**
+     * Finish immediately because this is a state-change command.
+     *
+     * @return true
+     */
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	/**
-	 * Log when this command is interrupted.
-	 */
-	@Override
-	protected void interrupted() {
-		Logger.addEvent("SetAnalogMotor Interrupted!", this.getClass());
-	}
+    /**
+     * Log when this command ends
+     */
+    @Override
+    protected void end() {
+        Logger.addEvent("SetAnalogMotor end.", this.getClass());
+    }
+
+    /**
+     * Log when this command is interrupted.
+     */
+    @Override
+    protected void interrupted() {
+        Logger.addEvent("SetAnalogMotor Interrupted!", this.getClass());
+    }
 }

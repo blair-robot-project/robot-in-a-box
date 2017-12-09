@@ -15,23 +15,23 @@ import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.commands
  * A command that drives the given subsystem to a position relative to the current position.
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
-public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides> extends YamlCommandGroupWrapper{
+public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides> extends YamlCommandGroupWrapper {
 
-	/**
-	 * Default constructor.
-	 *
-	 * @param getPath The command to get a path from the Jetson.
-	 * @param subsystem The subsystem to run the path gotten from the Jetson on.
-	 */
-	@JsonCreator
-	public GoToPositionRelative(@NotNull @JsonProperty(required = true) GetPathFromJetson getPath,
-	                            @NotNull @JsonProperty(required = true) T subsystem){
-		addSequential(getPath.getCommand());
-		if(getPath.getMotionProfileData().length == 1){
-			addSequential(new RunProfile<>(subsystem, getPath.getMotionProfileData()[0], 10));
-		} else {
-			addSequential(new RunProfileTwoSides<>(subsystem, getPath.getMotionProfileData()[0],
-					getPath.getMotionProfileData()[1], 10));
-		}
-	}
+    /**
+     * Default constructor.
+     *
+     * @param getPath   The command to get a path from the Jetson.
+     * @param subsystem The subsystem to run the path gotten from the Jetson on.
+     */
+    @JsonCreator
+    public GoToPositionRelative(@NotNull @JsonProperty(required = true) GetPathFromJetson getPath,
+                                @NotNull @JsonProperty(required = true) T subsystem) {
+        addSequential(getPath.getCommand());
+        if (getPath.getMotionProfileData().length == 1) {
+            addSequential(new RunProfile<>(subsystem, getPath.getMotionProfileData()[0], 10));
+        } else {
+            addSequential(new RunProfileTwoSides<>(subsystem, getPath.getMotionProfileData()[0],
+                    getPath.getMotionProfileData()[1], 10));
+        }
+    }
 }

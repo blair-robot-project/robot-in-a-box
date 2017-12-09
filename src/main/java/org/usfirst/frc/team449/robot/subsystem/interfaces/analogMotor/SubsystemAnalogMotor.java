@@ -10,6 +10,7 @@ public interface SubsystemAnalogMotor {
 
     /**
      * Set output to a given input.
+     *
      * @param input The input to give to the motor.
      */
     void set(double input);
