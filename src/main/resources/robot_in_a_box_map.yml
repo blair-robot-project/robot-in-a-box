@@ -143,22 +143,6 @@ variousSubsystems:
                 reverseOutput: false
                 invertInVoltage: false
                 reverseSensor: false
-        defaultCommand:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
-                '@id': defaultCommand10
-                subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
-                        talon10Subsystem
-                throttle:
-                    org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
-                        '@id': throttle10
-                        stick:
-                            org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
-                                joystick
-                        axis: 2
-                        deadband: 0.05
-                        smoothingTimeSecs: 0.04
-                        inverted: false
     - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
         '@id': talon11Subsystem
         motor:
@@ -170,8 +154,24 @@ variousSubsystems:
                 reverseOutput: false
                 invertInVoltage: false
                 reverseSensor: false
-        defaultCommand:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
+updater:
+    org.usfirst.frc.team449.robot.other.Updater:
+        '@id': updater
+        updatables:
+            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
+                throttle10
+            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
+                throttle11
+startupCommand:
+    org.usfirst.frc.team449.robot.commands.general.YamlCommandGroupWrapper:
+        '@id': startup
+        commandSet:
+            - org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.commands.StartCompressor:
+                '@id': startCompressor
+                subsystem:
+                    org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics:
+                        pneumatics
+            - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
                 '@id': defaultCommand11
                 subsystem:
                     org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
@@ -186,17 +186,18 @@ variousSubsystems:
                         deadband: 0.05
                         smoothingTimeSecs: 0.04
                         inverted: false
-updater:
-    org.usfirst.frc.team449.robot.other.Updater:
-        '@id': updater
-        updatables:
-            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
-                throttle10
-            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
-                throttle11
-startupCommand:
-    org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.commands.StartCompressor:
-        '@id': startCompressor
-        subsystem:
-            org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics:
-                pneumatics
+            - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
+                '@id': defaultCommand10
+                subsystem:
+                    org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
+                        talon10Subsystem
+                throttle:
+                    org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
+                        '@id': throttle10
+                        stick:
+                            org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
+                                joystick
+                        axis: 2
+                        deadband: 0.05
+                        smoothingTimeSecs: 0.04
+                        inverted: false
