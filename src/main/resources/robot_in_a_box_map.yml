@@ -38,10 +38,10 @@ buttons:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
                 button1
         command:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.commands.TurnMotorOff:
+            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidReverse:
                 '@id': retract1
                 subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.BinaryMotorGoToPosChangePID:
+                    org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         solenoidSubsystem1
         action: WHEN_RELEASED
     -   button:
@@ -67,10 +67,10 @@ buttons:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
                 button2
         command:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.commands.TurnMotorOff:
+            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidReverse:
                 '@id': retract2
                 subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.BinaryMotorGoToPosChangePID:
+                    org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         solenoidSubsystem2
         action: WHEN_RELEASED
     -   button:
@@ -96,10 +96,10 @@ buttons:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
                 button3
         command:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.commands.TurnMotorOff:
+            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidReverse:
                 '@id': retract3
                 subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.BinaryMotorGoToPosChangePID:
+                    org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         solenoidSubsystem3
         action: WHEN_RELEASED
     -   button:
@@ -125,10 +125,10 @@ buttons:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
                 button4
         command:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.commands.TurnMotorOff:
+            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidReverse:
                 '@id': retract4
                 subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.binaryMotor.BinaryMotorGoToPosChangePID:
+                    org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         solenoidSubsystem4
         action: WHEN_RELEASED
 variousSubsystems:
@@ -154,14 +154,6 @@ variousSubsystems:
                 reverseOutput: false
                 invertInVoltage: false
                 reverseSensor: false
-updater:
-    org.usfirst.frc.team449.robot.other.Updater:
-        '@id': updater
-        updatables:
-            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
-                throttle10
-            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
-                throttle11
 startupCommand:
     org.usfirst.frc.team449.robot.commands.general.YamlCommandGroupWrapper:
         '@id': startup
@@ -201,3 +193,11 @@ startupCommand:
                         deadband: 0.05
                         smoothingTimeSecs: 0.04
                         inverted: false
+updater:
+    org.usfirst.frc.team449.robot.other.Updater:
+        '@id': updater
+        updatables:
+            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
+                throttle10
+            - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
+                throttle11
