@@ -28,11 +28,11 @@ buttons:
                 subsystem:
                     org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         '@id': solenoidSubsystem1
-                            piston:
-                                '@id': solenoid1
-                                module: 0
-                                forward: 0
-                                reverse: 1
+                        piston:
+                            '@id': solenoid1
+                            module: 0
+                            forward: 0
+                            reverse: 1
         action: WHEN_PRESSED
     -   button:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
@@ -57,11 +57,11 @@ buttons:
                 subsystem:
                     org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         '@id': solenoidSubsystem2
-                            piston:
-                                '@id': solenoid2
-                                module: 0
-                                forward: 2
-                                reverse: 3
+                        piston:
+                            '@id': solenoid2
+                            module: 0
+                            forward: 2
+                            reverse: 3
         action: WHEN_PRESSED
     -   button:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
@@ -86,11 +86,11 @@ buttons:
                 subsystem:
                     org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         '@id': solenoidSubsystem3
-                            piston:
-                                '@id': solenoid3
-                                module: 0
-                                forward: 4
-                                reverse: 5
+                        piston:
+                            '@id': solenoid3
+                            module: 0
+                            forward: 4
+                            reverse: 5
         action: WHEN_PRESSED
     -   button:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
@@ -115,11 +115,11 @@ buttons:
                 subsystem:
                     org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         '@id': solenoidSubsystem4
-                            piston:
-                                '@id': solenoid4
-                                module: 0
-                                forward: 6
-                                reverse: 7
+                        piston:
+                            '@id': solenoid4
+                            module: 0
+                            forward: 6
+                            reverse: 7
         action: WHEN_PRESSED
     -   button:
             org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
@@ -155,7 +155,7 @@ variousSubsystems:
                 invertInVoltage: false
                 reverseSensor: false
 startupCommand:
-    org.usfirst.frc.team449.robot.commands.general.YamlCommandGroupWrapper:
+    org.usfirst.frc.team449.robot.commands.general.ParallelCommandGroup:
         '@id': startup
         commandSet:
             - org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.commands.StartCompressor:
@@ -174,10 +174,10 @@ startupCommand:
                         stick:
                             org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
                                 joystick
-                        axis: 4
+                        axis: 1
                         deadband: 0.05
                         smoothingTimeSecs: 0.04
-                        inverted: false
+                        inverted: true
             - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
                 '@id': defaultCommand10
                 subsystem:
@@ -189,10 +189,10 @@ startupCommand:
                         stick:
                             org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
                                 joystick
-                        axis: 2
+                        axis: 5
                         deadband: 0.05
                         smoothingTimeSecs: 0.04
-                        inverted: false
+                        inverted: true
 updater:
     org.usfirst.frc.team449.robot.other.Updater:
         '@id': updater
