@@ -5,7 +5,7 @@ logger:
         - org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics:
             '@id': pneumatics
             nodeID: 0
-        - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableDigitalInput:
+        - org.usfirst.frc.team449.robot.jacksonWrappers.DigitalInput:
             '@id': digitalInputs
             ports:
                 - 0
@@ -18,21 +18,21 @@ logger:
                 - 7
                 - 8
                 - 9
-        - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+        - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
             &analogInput
             '@id': analog0
             port: 0
             oversampleBits: 4
             averageBits: 2
-        - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+        - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
             <<: *analogInput
             '@id': analog1
             port: 1
-        - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+        - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
             <<: *analogInput
             '@id': analog2
             port: 2
-        - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+        - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
             <<: *analogInput
             '@id': analog3
             port: 3
@@ -227,11 +227,11 @@ updater:
                 throttle10
             - org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
                 throttle11
-            - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+            - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
                 analog0
-            - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+            - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
                 analog1
-            - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+            - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
                 analog2
-            - org.usfirst.frc.team449.robot.jacksonWrappers.LoggableAnalogInput:
+            - org.usfirst.frc.team449.robot.jacksonWrappers.AnalogInput:
                 analog3
