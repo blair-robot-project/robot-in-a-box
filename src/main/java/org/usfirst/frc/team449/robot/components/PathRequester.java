@@ -56,14 +56,14 @@ public class PathRequester {
      *
      * @param x     The x displacement, in any unit.
      * @param y     The y displacement, in any unit.
-     * @param theta The angular displacement, in radians.
+     * @param theta The angular displacement, in degrees.
      */
     public void requestPath(double x, double y, double theta) {
         //Send the request
         pathRequest = PathRequestOuterClass.PathRequest.newBuilder();
         pathRequest.setX(x);
         pathRequest.setY(y);
-        pathRequest.setTheta(theta);
+        pathRequest.setTheta(Math.toRadians(theta));
         socket.send(pathRequest.build().toByteArray());
     }
 
