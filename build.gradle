@@ -36,7 +36,7 @@ dependencies {
 	compile 'io.grpc:grpc-protobuf:1.0.0-pre2'
     // https://mvnrepository.com/artifact/org.zeromq/jeromq
     compile group: 'org.zeromq', name: 'jeromq', version: '0.4.3'
-    compile 'com.github.blair-robot-project:449-central-repo:c7ecfa220d'
+    compile 'com.github.blair-robot-project:449-central-repo:dbed9fb636'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.0.pr3'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core

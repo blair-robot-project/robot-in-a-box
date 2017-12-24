@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.usfirst.frc.team449.robot.generalInterfaces.poseCommand.PoseCommand;
 import org.usfirst.frc.team449.robot.jacksonWrappers.YamlCommandGroupWrapper;
 import org.usfirst.frc.team449.robot.jacksonWrappers.YamlSubsystem;
+import org.usfirst.frc.team449.robot.other.MotionProfileData;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.TwoSideMPSubsystem.SubsystemMPTwoSides;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.commands.GetPathFromJetson;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.commands.RunProfile;
@@ -36,12 +38,8 @@ public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides>
                                 @NotNull @JsonProperty(required = true) T subsystem) {
         this.getPath = getPath;
         addSequential(getPath.getCommand());
-        if (getPath.getMotionProfileData().length == 1) {
-            addSequential(new RunProfile<>(subsystem, getPath.getMotionProfileData()[0], 10));
-        } else {
-            addSequential(new RunProfileTwoSides<>(subsystem, getPath.getMotionProfileData()[0],
-                    getPath.getMotionProfileData()[1], 10));
-        }
+        addSequential(new RunProfileTwoSides<>(subsystem, this::getLeft,
+                this::getRight, 10));
     }
 
     /**
@@ -66,5 +64,32 @@ public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides>
     @Override
     public void setDestination(DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier thetaSupplier) {
         getPath.setDestination(xSupplier, ySupplier, thetaSupplier);
+    }
+
+    /**
+     * @return The motion profile for the left side to run, or null if not received from the Jetson yet.
+     */
+    @Nullable
+    private MotionProfileData getLeft(){
+        if (getPath.getMotionProfileData() == null){
+            return null;
+        } else {
+            return getPath.getMotionProfileData()[0];
+        }
+    }
+
+    /**
+     * @return The motion profile for the right side to run, or null if not received from the Jetson yet.
+     */
+    @Nullable
+    private MotionProfileData getRight(){
+        if (getPath.getMotionProfileData() == null){
+            return null;
+        } else if (getPath.getMotionProfileData().length < 2){
+            //If it's only 1 profile, then it's the same one for both sides.
+            return getPath.getMotionProfileData()[0];
+        } else {
+            return getPath.getMotionProfileData()[1];
+        }
     }
 }
