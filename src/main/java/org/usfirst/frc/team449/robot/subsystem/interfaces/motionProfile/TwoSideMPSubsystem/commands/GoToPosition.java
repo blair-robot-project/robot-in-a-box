@@ -73,7 +73,7 @@ public class GoToPosition<T extends YamlSubsystem & SubsystemMPTwoSides & Subsys
         this.poseEstimator = poseEstimator;
         this.subsystem = subsystem;
         GetPathFromJetson getPath = new GetPathFromJetson(pathRequester, null, null,
-                null, deltaTime, false, false);
+                null, deltaTime,  false);
         GoToPositionRelative goToPositionRelative = new GoToPositionRelative<>(getPath, subsystem);
         goToPositionRelative.setDestination(this::getX, this::getY, this::getTheta);
         addSequential(goToPositionRelative);

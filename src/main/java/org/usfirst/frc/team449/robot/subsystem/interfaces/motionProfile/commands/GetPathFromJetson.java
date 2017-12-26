@@ -30,9 +30,14 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
      */
     private final double deltaTime;
     /**
-     * Whether to invert the profile and whether to reset the encoder position before running the profile.
+     * Whether to reset the encoder position before running the profile.
      */
-    private final boolean inverted, resetPosition;
+    private final boolean resetPosition;
+
+    /**
+     * Whether or not to invert the motion profile.
+     */
+    private boolean inverted;
     /**
      * Parameters for the motion profile, with x and y in feet and theta in radians. Null to use lambdas.
      */
@@ -62,7 +67,6 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
      * @param theta         The angle, in degrees, for the robot to turn to while travelling. Can be null to set pose
      *                      using setters.
      * @param deltaTime     The time between setpoints in the profile, in seconds.
-     * @param inverted      Whether or not to invert the profile.
      * @param resetPosition Whether or not to reset the encoder position before running the profile.
      */
     @JsonCreator
@@ -71,14 +75,12 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
                              @Nullable Double y,
                              @Nullable Double theta,
                              @JsonProperty(required = true) double deltaTime,
-                             boolean inverted,
                              boolean resetPosition) {
         this.pathRequester = pathRequester;
         this.x = x;
         this.y = y;
         this.theta = theta;
         this.deltaTime = deltaTime;
-        this.inverted = inverted;
         this.resetPosition = resetPosition;
     }
 
@@ -89,9 +91,13 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
     protected void initialize() {
         Logger.addEvent("GetPathFromJetson init", this.getClass());
         if (x != null) {
-            pathRequester.requestPath(x, y, theta, deltaTime);
+            inverted = x < 0;
+            pathRequester.requestPath(Math.abs(x), y, (inverted ? -1 : 1) * theta, deltaTime);
         } else {
-            pathRequester.requestPath(xSupplier.getAsDouble(), ySupplier.getAsDouble(), thetaSupplier.getAsDouble(), deltaTime);
+            //Store getAsDouble in x so it doesn't change between checking inversion and requesting the path
+            x = xSupplier.getAsDouble();
+            inverted = x < 0;
+            pathRequester.requestPath(Math.abs(x), ySupplier.getAsDouble(), (inverted ? -1 : 1) * thetaSupplier.getAsDouble(), deltaTime);
         }
         motionProfileData = null;
     }
