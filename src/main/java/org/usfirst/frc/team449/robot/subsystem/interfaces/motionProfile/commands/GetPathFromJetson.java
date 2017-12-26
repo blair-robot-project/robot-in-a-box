@@ -18,27 +18,29 @@ import java.util.function.DoubleSupplier;
  * Requests and receives a profile from the Jetson, accessible via a getter.
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
-public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand{
+public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand {
 
     /**
      * The object for interacting with the Jetson.
      */
     @NotNull
     private final PathRequester pathRequester;
-
+    /**
+     * The time between setpoints in the profile, in seconds.
+     */
+    private final double deltaTime;
+    /**
+     * Whether to invert the profile and whether to reset the encoder position before running the profile.
+     */
+    private final boolean inverted, resetPosition;
     /**
      * Parameters for the motion profile, with x and y in feet and theta in radians. Null to use lambdas.
      */
     @Nullable
     private Double x, y, theta;
-
     /**
-     * Whether to invert the profile and whether to reset the encoder position before running the profile.
-     */
-    private final boolean inverted, resetPosition;
-
-    /**
-     * Getters for the motion profile parameters, with x and y in feet and theta in radians. Must not be null if the Double parameters are null, otherwise are ignored.
+     * Getters for the motion profile parameters, with x and y in feet and theta in radians. Must not be null if the
+     * Double parameters are null, otherwise are ignored.
      */
     @Nullable
     private DoubleSupplier xSupplier, ySupplier, thetaSupplier;
@@ -53,9 +55,13 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
      * Default constructor.
      *
      * @param pathRequester The object for interacting with the Jetson.
-     * @param x             The X (forwards) distance for the robot to travel, in feet. Can be null to set pose using setters.
-     * @param y             The Y (sideways) distance for the robot to travel, in feet. Can be null to set pose using setters.
-     * @param theta         The angle, in degrees, for the robot to turn to while travelling. Can be null to set pose using setters.
+     * @param x             The X (forwards) distance for the robot to travel, in feet. Can be null to set pose using
+     *                      setters.
+     * @param y             The Y (sideways) distance for the robot to travel, in feet. Can be null to set pose using
+     *                      setters.
+     * @param theta         The angle, in degrees, for the robot to turn to while travelling. Can be null to set pose
+     *                      using setters.
+     * @param deltaTime     The time between setpoints in the profile, in seconds.
      * @param inverted      Whether or not to invert the profile.
      * @param resetPosition Whether or not to reset the encoder position before running the profile.
      */
@@ -64,12 +70,14 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
                              @Nullable Double x,
                              @Nullable Double y,
                              @Nullable Double theta,
+                             @JsonProperty(required = true) double deltaTime,
                              boolean inverted,
                              boolean resetPosition) {
         this.pathRequester = pathRequester;
         this.x = x;
         this.y = y;
         this.theta = theta;
+        this.deltaTime = deltaTime;
         this.inverted = inverted;
         this.resetPosition = resetPosition;
     }
@@ -81,9 +89,9 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
     protected void initialize() {
         Logger.addEvent("GetPathFromJetson init", this.getClass());
         if (x != null) {
-            pathRequester.requestPath(x, y, theta);
+            pathRequester.requestPath(x, y, theta, deltaTime);
         } else {
-            pathRequester.requestPath(xSupplier.getAsDouble(), ySupplier.getAsDouble(), thetaSupplier.getAsDouble());
+            pathRequester.requestPath(xSupplier.getAsDouble(), ySupplier.getAsDouble(), thetaSupplier.getAsDouble(), deltaTime);
         }
         motionProfileData = null;
     }
@@ -154,7 +162,7 @@ public class GetPathFromJetson extends YamlCommandWrapper implements PoseCommand
     @Override
     public void setDestination(DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier thetaSupplier) {
         this.x = null;
-        this.y= null;
+        this.y = null;
         this.theta = null;
         this.xSupplier = xSupplier;
         this.ySupplier = ySupplier;

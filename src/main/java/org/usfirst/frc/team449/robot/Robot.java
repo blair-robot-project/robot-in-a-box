@@ -7,14 +7,11 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.jetbrains.annotations.NotNull;
-import org.usfirst.frc.team449.robot.components.PathRequester;
 import org.usfirst.frc.team449.robot.other.Clock;
-import org.usfirst.frc.team449.robot.other.MotionProfileData;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -37,8 +34,6 @@ public class Robot extends IterativeRobot {
      * The Notifier running the logging thread.
      */
     private Notifier loggerNotifier;
-
-    private PathRequester pathRequester;
 
     /**
      * The method that runs when the robot is turned on. Initializes all subsystems from the map.
@@ -70,8 +65,6 @@ public class Robot extends IterativeRobot {
         //Read sensors
         robotMap.getUpdater().run();
 
-        pathRequester = new PathRequester("tcp://10.4.49.2:5556");
-
         //Set fields from the map.
         this.loggerNotifier = new Notifier(robotMap.getLogger());
 
@@ -98,8 +91,6 @@ public class Robot extends IterativeRobot {
             robotMap.getStartupCommand().getCommand().start();
         }
 
-        pathRequester.requestPath(100, 0, 0);
-
         //Log
         loggerNotifier.startSingle(0);
     }
@@ -117,13 +108,6 @@ public class Robot extends IterativeRobot {
 
         //Run all commands. This is a WPILib thing you don't really have to worry about.
         Scheduler.getInstance().run();
-
-        MotionProfileData[] data = pathRequester.getPath(false, true);
-        if (data != null) {
-            System.out.println(Arrays.deepToString(data[0].getData()));
-        } else {
-            System.out.println("No response yet.");
-        }
 
         //Log
         loggerNotifier.startSingle(0);

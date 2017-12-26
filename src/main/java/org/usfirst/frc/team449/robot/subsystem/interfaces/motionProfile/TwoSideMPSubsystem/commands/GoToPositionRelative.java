@@ -12,7 +12,6 @@ import org.usfirst.frc.team449.robot.jacksonWrappers.YamlSubsystem;
 import org.usfirst.frc.team449.robot.other.MotionProfileData;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.TwoSideMPSubsystem.SubsystemMPTwoSides;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.commands.GetPathFromJetson;
-import org.usfirst.frc.team449.robot.subsystem.interfaces.motionProfile.commands.RunProfile;
 
 import java.util.function.DoubleSupplier;
 
@@ -20,7 +19,7 @@ import java.util.function.DoubleSupplier;
  * A command that drives the given subsystem to a position relative to the current position.
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
-public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides> extends YamlCommandGroupWrapper implements PoseCommand{
+public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides> extends YamlCommandGroupWrapper implements PoseCommand {
 
     /**
      * The command for getting the path from the Jetson.
@@ -70,8 +69,8 @@ public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides>
      * @return The motion profile for the left side to run, or null if not received from the Jetson yet.
      */
     @Nullable
-    private MotionProfileData getLeft(){
-        if (getPath.getMotionProfileData() == null){
+    private MotionProfileData getLeft() {
+        if (getPath.getMotionProfileData() == null) {
             return null;
         } else {
             return getPath.getMotionProfileData()[0];
@@ -82,10 +81,10 @@ public class GoToPositionRelative<T extends YamlSubsystem & SubsystemMPTwoSides>
      * @return The motion profile for the right side to run, or null if not received from the Jetson yet.
      */
     @Nullable
-    private MotionProfileData getRight(){
-        if (getPath.getMotionProfileData() == null){
+    private MotionProfileData getRight() {
+        if (getPath.getMotionProfileData() == null) {
             return null;
-        } else if (getPath.getMotionProfileData().length < 2){
+        } else if (getPath.getMotionProfileData().length < 2) {
             //If it's only 1 profile, then it's the same one for both sides.
             return getPath.getMotionProfileData()[0];
         } else {

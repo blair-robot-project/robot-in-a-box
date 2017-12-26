@@ -54,16 +54,18 @@ public class PathRequester {
     /**
      * Request a motion profile path for a given x, y, and angular displacement.
      *
-     * @param x     The x displacement, in any unit.
-     * @param y     The y displacement, in any unit.
-     * @param theta The angular displacement, in degrees.
+     * @param x         The x displacement, in any unit.
+     * @param y         The y displacement, in any unit.
+     * @param theta     The angular displacement, in degrees.
+     * @param deltaTime The time between setpoints in the profile, in seconds.
      */
-    public void requestPath(double x, double y, double theta) {
+    public void requestPath(double x, double y, double theta, double deltaTime) {
         //Send the request
         pathRequest = PathRequestOuterClass.PathRequest.newBuilder();
         pathRequest.setX(x);
         pathRequest.setY(y);
         pathRequest.setTheta(Math.toRadians(theta));
+        pathRequest.setDt((int) (deltaTime * 1000)); //Convert to milliseconds
         socket.send(pathRequest.build().toByteArray());
     }
 

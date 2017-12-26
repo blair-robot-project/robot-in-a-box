@@ -24,37 +24,40 @@ import java.util.function.DoubleSupplier;
 public class GoToPosition<T extends YamlSubsystem & SubsystemMPTwoSides & SubsystemAHRS> extends YamlCommandGroupWrapper implements PoseCommand {
 
     /**
-     * The absolute destination, with distance in feet and angle in degrees. Can be null to use lambdas.
-     */
-    @Nullable
-    private Double x, y, theta;
-
-    /**
-     * Getters for the motion profile parameters, with x and y in feet and theta in radians. Must not be null if the Double parameters are null, otherwise are ignored.
-     */
-    @Nullable
-    private DoubleSupplier xSupplier, ySupplier, thetaSupplier;
-
-    /**
      * The object to get robot pose from.
      */
     @NotNull
     private final PoseEstimator poseEstimator;
-
     /**
      * The subsystem to run the path gotten from the Jetson on.
      */
     @NotNull
     private final T subsystem;
     /**
+     * The absolute destination, with distance in feet and angle in degrees. Can be null to use lambdas.
+     */
+    @Nullable
+    private Double x, y, theta;
+    /**
+     * Getters for the motion profile parameters, with x and y in feet and theta in radians. Must not be null if the
+     * Double parameters are null, otherwise are ignored.
+     */
+    @Nullable
+    private DoubleSupplier xSupplier, ySupplier, thetaSupplier;
+
+    /**
      * Default constructor
      *
      * @param subsystem     The subsystem to run the path gotten from the Jetson on.
      * @param pathRequester The object for interacting with the Jetson.
      * @param poseEstimator The object to get robot pose from.
-     * @param x             The absolute X position, in feet, for the robot to go to.
-     * @param y             The absolute Y position, in feet, for the robot to go to.
-     * @param theta         The absolute angle, in degrees, for the robot to go to.
+     * @param x             The absolute X position, in feet, for the robot to go to. Can be null to set pose using
+     *                      setters.
+     * @param y             The absolute Y position, in feet, for the robot to go to. Can be null to set pose using
+     *                      setters.
+     * @param theta         The absolute angle, in degrees, for the robot to go to. Can be null to set pose using
+     *                      setters.
+     * @param deltaTime     The time between setpoints in the profile, in seconds.
      */
     @JsonCreator
     public GoToPosition(@NotNull @JsonProperty(required = true) T subsystem,
@@ -62,14 +65,15 @@ public class GoToPosition<T extends YamlSubsystem & SubsystemMPTwoSides & Subsys
                         @NotNull @JsonProperty(required = true) PoseEstimator poseEstimator,
                         @Nullable Double x,
                         @Nullable Double y,
-                        @Nullable Double theta) {
+                        @Nullable Double theta,
+                        @JsonProperty(required = true) double deltaTime) {
         this.x = x;
         this.y = y;
         this.theta = theta;
         this.poseEstimator = poseEstimator;
         this.subsystem = subsystem;
         GetPathFromJetson getPath = new GetPathFromJetson(pathRequester, null, null,
-                null, false, false);
+                null, deltaTime, false, false);
         GoToPositionRelative goToPositionRelative = new GoToPositionRelative<>(getPath, subsystem);
         goToPositionRelative.setDestination(this::getX, this::getY, this::getTheta);
         addSequential(goToPositionRelative);
@@ -78,7 +82,7 @@ public class GoToPosition<T extends YamlSubsystem & SubsystemMPTwoSides & Subsys
     /**
      * @return The relative X distance to the setpoint, in feet.
      */
-    private double getX(){
+    private double getX() {
         if (x != null) {
             return x - poseEstimator.getPos()[0];
         } else {
@@ -89,7 +93,7 @@ public class GoToPosition<T extends YamlSubsystem & SubsystemMPTwoSides & Subsys
     /**
      * @return The relative Y distance to the setpoint, in feet.
      */
-    private double getY(){
+    private double getY() {
         if (y != null) {
             return y - poseEstimator.getPos()[1];
         } else {
@@ -100,7 +104,7 @@ public class GoToPosition<T extends YamlSubsystem & SubsystemMPTwoSides & Subsys
     /**
      * @return The relative angular distance to the setpoint, in degrees.
      */
-    private double getTheta(){
+    private double getTheta() {
         if (theta != null) {
             return theta - subsystem.getHeading();
         } else {
