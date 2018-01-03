@@ -6,18 +6,35 @@ logger:
             '@id': pneumatics
             nodeID: 0
         - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
-            '@id': digitalInputs
-            ports:
-                - 0
-                - 1
-                - 2
-                - 3
-                - 4
-                - 5
-                - 6
-                - 7
-                - 8
-                - 9
+            '@id': digital0
+            channel: 0
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital1
+            channel: 1
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital2
+            channel: 2
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital3
+            channel: 3
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital4
+            channel: 4
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital5
+            channel: 5
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital6
+            channel: 6
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital7
+            channel: 7
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital8
+            channel: 8
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
+            '@id': digital9
+            channel: 9
         - org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
             &analogInput
             '@id': analog0
