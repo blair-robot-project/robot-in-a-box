@@ -53,7 +53,7 @@ logger:
             <<: *analogInput
             '@id': analog3
             port: 3
-    loopTimeSecs: 0.5
+    loopTimeSecs: 0.05
     eventLogFilename: "/home/lvuser/logs/eventLog-"
     telemetryLogFilename: "/home/lvuser/logs/telemetryLog-"
 buttons:
@@ -174,68 +174,69 @@ buttons:
                     org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
                         solenoidSubsystem4
         action: WHEN_RELEASED
-variousSubsystems:
-    - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
-        '@id': talon10Subsystem
-        motor:
-            org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
-                '@id': talon10
-                port: 10
-                enableBrakeMode: false
-                currentLimit: 20
-                reverseOutput: false
-                invertInVoltage: false
-                reverseSensor: false
-    - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
-        '@id': talon11Subsystem
-        motor:
-            org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
-                '@id': talon11
-                port: 11
-                enableBrakeMode: false
-                currentLimit: 40
-                reverseOutput: false
-                invertInVoltage: false
-                reverseSensor: false
+defaultCommands:
+    - subsystem:
+        org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
+            '@id': talon10Subsystem
+            motor:
+                org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
+                    '@id': talon10
+                    port: 10
+                    enableBrakeMode: false
+                    currentLimit: 20
+                    reverseOutput: false
+                    invertInVoltage: false
+                    reverseSensor: false
+      command:
+        org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
+            '@id': defaultCommand10
+            subsystem:
+                org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
+                    talon10Subsystem
+            throttle:
+                org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
+                    '@id': throttle10
+                    stick:
+                        org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
+                            joystick
+                    axis: 5
+                    deadband: 0.05
+                    smoothingTimeSecs: 0.04
+                    inverted: true
+    - subsystem:
+        org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
+            '@id': talon11Subsystem
+            motor:
+                org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
+                    '@id': talon11
+                    port: 11
+                    enableBrakeMode: false
+                    currentLimit: 40
+                    reverseOutput: false
+                    invertInVoltage: false
+                    reverseSensor: false
+      command:
+        org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
+            '@id': defaultCommand11
+            subsystem:
+                org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
+                    talon11Subsystem
+            throttle:
+                org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
+                    '@id': throttle11
+                    stick:
+                        org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
+                            joystick
+                    axis: 1
+                    deadband: 0.05
+                    smoothingTimeSecs: 0.04
+                    inverted: true
 startupCommand:
-    org.usfirst.frc.team449.robot.commands.general.ParallelCommandGroup:
-        '@id': startup
-        commandSet:
-            - org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.commands.StartCompressor:
-                '@id': startCompressor
-                subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics:
-                        pneumatics
-            - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
-                '@id': defaultCommand11
-                subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
-                        talon11Subsystem
-                throttle:
-                    org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
-                        '@id': throttle11
-                        stick:
-                            org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
-                                joystick
-                        axis: 1
-                        deadband: 0.05
-                        smoothingTimeSecs: 0.04
-                        inverted: true
-            - org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
-                '@id': defaultCommand10
-                subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorSimple:
-                        talon10Subsystem
-                throttle:
-                    org.usfirst.frc.team449.robot.oi.throttles.ThrottleDeadbanded:
-                        '@id': throttle10
-                        stick:
-                            org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
-                                joystick
-                        axis: 5
-                        deadband: 0.05
-                        smoothingTimeSecs: 0.04
-                        inverted: true
+    org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.commands.StartCompressor:
+        '@id': startCompressor
+        subsystem:
+            org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics:
+                pneumatics
 updater:
     org.usfirst.frc.team449.robot.other.Updater:
         '@id': updater
