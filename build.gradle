@@ -7,7 +7,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'idea'
-    id 'jaci.openrio.gradle.GradleRIO' version "2018.01.06"
+    id 'jaci.openrio.gradle.GradleRIO' version "2018.01.06b"
 }
 
 group 'org.usfirst.frc.team449.robot-in-a-box'
@@ -28,6 +28,7 @@ repositories {
 }
 dependencies {
     compile 'com.github.blair-robot-project:449-central-repo:869e89539d'
+    compile wpilib()
 }
 
 /* ssh stuff */
