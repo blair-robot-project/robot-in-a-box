@@ -53,6 +53,20 @@ logger:
             <<: *analogInput
             '@id': analog3
             port: 3
+        - org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
+            '@id': talon10
+            port: 10
+            enableBrakeMode: false
+            currentLimit: 20
+            reverseOutput: false
+            reverseSensor: false
+        - org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
+            '@id': talon11
+            port: 11
+            enableBrakeMode: false
+            currentLimit: 40
+            reverseOutput: false
+            reverseSensor: false
     loopTimeSecs: 0.05
     eventLogFilename: "/home/lvuser/logs/eventLog-"
     telemetryLogFilename: "/home/lvuser/logs/telemetryLog-"
@@ -180,13 +194,7 @@ defaultCommands:
             '@id': talon10Subsystem
             motor:
                 org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
-                    '@id': talon10
-                    port: 10
-                    enableBrakeMode: false
-                    currentLimit: 20
-                    reverseOutput: false
-                    invertInVoltage: false
-                    reverseSensor: false
+                    talon10
       command:
         org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
             '@id': defaultCommand10
@@ -208,13 +216,7 @@ defaultCommands:
             '@id': talon11Subsystem
             motor:
                 org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
-                    '@id': talon11
-                    port: 11
-                    enableBrakeMode: false
-                    currentLimit: 40
-                    reverseOutput: false
-                    invertInVoltage: false
-                    reverseSensor: false
+                    talon11
       command:
         org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.ControlAnalogMotorWithThrottle:
             '@id': defaultCommand11

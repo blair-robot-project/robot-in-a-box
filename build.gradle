@@ -27,8 +27,10 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 dependencies {
-    compile 'com.github.blair-robot-project:449-central-repo:869e89539d'
+    compile 'com.github.blair-robot-project:449-central-repo:6f40a0595c'
     compile wpilib()
+    compile ctre()
+    compile navx()
 }
 
 /* ssh stuff */
