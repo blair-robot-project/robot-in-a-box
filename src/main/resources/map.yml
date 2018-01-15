@@ -207,7 +207,7 @@ defaultCommands:
                     stick:
                         org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
                             joystick
-                    axis: 5
+                    axis: 1
                     deadband: 0.05
                     smoothingTimeSecs: 0.04
                     inverted: true
@@ -229,7 +229,7 @@ defaultCommands:
                     stick:
                         org.usfirst.frc.team449.robot.jacksonWrappers.MappedJoystick:
                             joystick
-                    axis: 1
+                    axis: 5
                     deadband: 0.05
                     smoothingTimeSecs: 0.04
                     inverted: true
