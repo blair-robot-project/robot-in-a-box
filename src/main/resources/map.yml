@@ -63,7 +63,7 @@ logger:
             slaves:
                 - '@id': slave12
                   port: 12
-                  inverted: false
+                  inverted: true
         - org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
             '@id': talon11
             port: 11
@@ -74,7 +74,7 @@ logger:
             slaves:
                 - '@id': slave13
                   port: 13
-                  inverted: false
+                  inverted: true
     loopTimeSecs: 0.05
     eventLogFilename: "/home/lvuser/logs/eventLog-"
     telemetryLogFilename: "/home/lvuser/logs/telemetryLog-"
