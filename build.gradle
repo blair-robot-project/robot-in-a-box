@@ -7,7 +7,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'idea'
-    id 'jaci.openrio.gradle.GradleRIO' version "2018.01.14"
+    id 'jaci.openrio.gradle.GradleRIO' version "2018.01.20"
 }
 
 group 'org.usfirst.frc.team449.robot-in-a-box'
@@ -28,19 +28,19 @@ repositories {
 }
 
 wpi {
-    wpilibVersion = "2018.1.1"      // The WPILib version to use. For this version of GradleRIO, must be a 2017 version.
+    wpilibVersion = "2018.2.1"      // The WPILib version to use. For this version of GradleRIO, must be a 2017 version.
     ntcoreVersion = "4.0.0"         // The NetworkTables Core version to use.
     opencvVersion = "3.2.0"         // The OpenCV version to use.
     cscoreVersion = "1.1.0"         // The CSCore version to use.
     wpiutilVersion = "3.0.0"
     ctreVersion = "5.2.1.1"        // The CTRE Toolsuite (Talon SRX) version to use.
-    navxVersion = "3.0.342"         // The NavX-MXP library version to use.
+    navxVersion = "3.0.346"         // The NavX-MXP library version to use.
     smartDashboardVersion = '3.0.0'
-    shuffleboardVersion = '1.0.0'
+    shuffleboardVersion = '1.1.1'
 }
 
 dependencies {
-    compile group : 'com.github.blair-robot-project', name: '449-central-repo', version:'30f884493d'
+    compile group : 'com.github.blair-robot-project', name: '449-central-repo', version:'25fd20b313'
     compile wpilib()
     compile ctre()
     compile navx()
