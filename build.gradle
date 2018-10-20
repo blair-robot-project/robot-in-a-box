@@ -49,7 +49,7 @@ dependencies {
 /* ssh stuff */
 remotes {
     rio {
-        host = 'roboRIO-449-frc.local'
+        host = 'roboRIO-'+TEAM+'-frc.local'
         user = 'lvuser'
         knownHosts = allowAnyHosts
     }
