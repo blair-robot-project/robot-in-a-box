@@ -5,6 +5,11 @@ logger:
         - org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics:
             '@id': pneumatics
             nodeID: 0
+        - org.usfirst.frc.team449.robot.jacksonWrappers.MappedI2C:
+            '@id': i2c
+            port: kOnboard
+            deviceAddress: 0
+            numBytes: 8
         - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
             '@id': digital0
             channel: 0
