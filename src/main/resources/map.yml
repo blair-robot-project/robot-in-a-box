@@ -9,7 +9,6 @@ logger:
             '@id': i2c
             port: kOnboard
             deviceAddress: 0
-            numBytes: 8
         - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
             '@id': digital0
             channel: 0
@@ -291,3 +290,5 @@ updater:
                 analog2
             - org.usfirst.frc.team449.robot.jacksonWrappers.MappedAnalogInput:
                 analog3
+            - org.usfirst.frc.team449.robot.jacksonWrappers.MappedI2C:
+                i2c
