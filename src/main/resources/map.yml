@@ -8,7 +8,7 @@ logger:
         - org.usfirst.frc.team449.robot.jacksonWrappers.MappedI2C:
             '@id': i2c
             port: kOnboard
-            deviceAddress: 0
+            deviceAddress: 4
         - org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput:
             '@id': digital0
             channel: 0
