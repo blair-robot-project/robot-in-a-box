@@ -13,14 +13,28 @@ import org.usfirst.frc.team449.robot.jacksonWrappers.MappedButton;
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
 public class ColorSensorButton extends MappedButton {
 
-	public final static boolean ALLIANCE_RED = true;
+	public final static boolean ALLIANCE_RED = false;
 
 	/**
 	 * The I2C this class is a wrapper on.
 	 */
 	protected final I2C i2c;
 
+	/**
+	 * Thresholds for red and blue values from color sensor, over which get()
+	 * will return true depending on alliance color
+	 */
 	private final int redThreshold, blueThreshold;
+
+	/**
+	 * Cached color values, since the RIOduino can't be pinged every robot tick
+	 */
+	private int cachedRed, cachedBlue;
+
+	/**
+	 * For delaying how often the I2C is pinged
+	 */
+	private int ticks;
 
 	/**
 	 * Default constructor.
@@ -38,6 +52,7 @@ public class ColorSensorButton extends MappedButton {
 		i2c = new I2C(port, deviceAddress);
 		this.redThreshold = redThreshold;
 		this.blueThreshold = blueThreshold;
+		ticks = 0;
 	}
 
 	private int[] readRGB() {
@@ -46,11 +61,7 @@ public class ColorSensorButton extends MappedButton {
 
 		int[] rgb = new int[3];
 		for (int i = 0; i < receivedData.length; i++) {
-			if ((int) receivedData[i] < 0) {
-				rgb[i] = (0x000000FF) & receivedData[i];
-			} else {
-				rgb[i] = (int) receivedData[i];
-			}
+			rgb[i] = (0x000000FF) & receivedData[i];
 		}
 
 		return rgb;
@@ -65,11 +76,18 @@ public class ColorSensorButton extends MappedButton {
 	 */
 	@Override
 	public boolean get() {
-		int[] rgb = readRGB();
+		if (ticks % 20 == 0) {
+			int[] rgb = readRGB();
+			cachedRed = rgb[0];
+			cachedBlue = rgb[2];
+		}
+
+		ticks++;
+
 		if (ALLIANCE_RED) {
-			return rgb[2] > blueThreshold;
+			return cachedBlue > blueThreshold;
 		} else {
-			return rgb[0] > redThreshold;
+			return cachedRed > redThreshold;
 		}
 	}
 

@@ -30,6 +30,11 @@ public class MappedI2C implements Loggable, Updatable {
 	private int cachedRed, cachedGreen, cachedBlue;
 
 	/**
+	 * For delaying how often the I2C is pinged
+	 */
+	private int ticks;
+
+	/**
 	 * Default constructor.
 	 *
 	 * @param port          The I2C port the device is connected to
@@ -39,6 +44,7 @@ public class MappedI2C implements Loggable, Updatable {
 	public MappedI2C(@JsonProperty(required = true) I2C.Port port,
 	                 int deviceAddress) {
 		i2c = new I2C(port, deviceAddress);
+		ticks = 0;
 	}
 
 	public int[] readRGB() {
@@ -47,11 +53,7 @@ public class MappedI2C implements Loggable, Updatable {
 
 		int[] rgb = new int[3];
 		for (int i = 0; i < receivedData.length; i++) {
-			if ((int) receivedData[i] < 0) {
-				rgb[i] = (0x000000FF) & receivedData[i];
-			} else {
-				rgb[i] = (int) receivedData[i];
-			}
+			rgb[i] = (0x000000FF) & receivedData[i];
 		}
 
 		return rgb;
@@ -129,14 +131,12 @@ public class MappedI2C implements Loggable, Updatable {
 	 */
 	@Override
 	public void update() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (ticks % 20 == 0) {
+			int[] rgb = readRGB();
+			cachedRed = rgb[0];
+			cachedGreen = rgb[1];
+			cachedBlue = rgb[2];
 		}
-		int[] rgb = readRGB();
-		cachedRed = rgb[0];
-		cachedGreen = rgb[1];
-		cachedBlue = rgb[2];
+		ticks++;
 	}
 }
