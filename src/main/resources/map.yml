@@ -87,27 +87,31 @@ buttons:
                 redThreshold: 130
                 blueThreshold: 95
         command:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidReverse:
-                '@id': retractSolenoid
-                subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
-                        '@id': solenoidSubsystem1
-                        piston:
-                            '@id': solenoid1
-                            module: 0
-                            forward: 0
-                            reverse: 1
+            org.usfirst.frc.team449.robot.commands.general.CommandSequence:
+                '@id': openAndCloseDoor
+                commandList:
+                    - org.usfirst.frc.team449.robot.commands.general.MappedWaitCommand:
+                        '@id': waitToReachDoor
+                        timeout: 1
+                    - org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidReverse:
+                        '@id': retractSolenoid
+                        subsystem:
+                            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
+                                '@id': solenoidSubsystem1
+                                piston:
+                                    '@id': solenoid1
+                                    module: 0
+                                    forward: 0
+                                    reverse: 1
+                    - org.usfirst.frc.team449.robot.commands.general.MappedWaitCommand:
+                        '@id': waitForBallExit
+                        timeout: 1
+                    - org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidForward:
+                        '@id': extendSolenoid
+                        subsystem:
+                            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
+                                solenoidSubsystem1
         action: WHEN_PRESSED
-    -   button:
-            org.usfirst.frc.team449.robot.oi.buttons.ColorSensorButton:
-                colorSensor
-        command:
-            org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.commands.SolenoidForward:
-                '@id': extendSolenoid
-                subsystem:
-                    org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple:
-                        solenoidSubsystem1
-        action: WHEN_RELEASED
 #    -   button:
 #            org.usfirst.frc.team449.robot.oi.buttons.SimpleButton:
 #                button1
