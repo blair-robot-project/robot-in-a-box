@@ -57,7 +57,7 @@ logger:
             '@id': talon10
             port: 10
             enableBrakeMode: false
-            currentLimit: 20
+            currentLimit: 50
             reverseOutput: false
             reverseSensor: false
             slaves:
@@ -68,7 +68,7 @@ logger:
             '@id': talon11
             port: 11
             enableBrakeMode: false
-            currentLimit: 40
+            currentLimit: 50
             reverseOutput: false
             reverseSensor: false
             slaves:
