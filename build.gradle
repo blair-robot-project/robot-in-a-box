@@ -1,55 +1,77 @@
-import jaci.openrio.gradle.GradleRIOPlugin
-import jaci.openrio.gradle.frc.FRCJavaArtifact
-import jaci.openrio.gradle.frc.RoboRIO
-
 plugins {
     id 'org.hidetake.ssh' version "2.9.0"
     id 'java'
     id 'eclipse'
     id 'idea'
-    id 'jaci.openrio.gradle.GradleRIO' version "2018.01.20"
+    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+    id "com.google.protobuf" version "0.8.3"
 }
 
 group 'org.usfirst.frc.team449.robot-in-a-box'
 version '1.0'
 
-def TEAM = 449
-def ROBOT_CLASS = "org.usfirst.frc.team449.robot.Robot"
+def ROBOT_MAIN_CLASS = "org.usfirst.frc.team449.robot.Main"
 
 repositories {
     mavenCentral()
-    maven {
-        name = "GradleRio"
-        url = "http://dev.imjac.in/maven"
-    }
 
     maven { url "https://plugins.gradle.org/m2/" }
     maven { url 'https://jitpack.io' }
 }
 
-wpi {
-    wpilibVersion = "2018.2.1"      // The WPILib version to use. For this version of GradleRIO, must be a 2017 version.
-    ntcoreVersion = "4.0.0"         // The NetworkTables Core version to use.
-    opencvVersion = "3.2.0"         // The OpenCV version to use.
-    cscoreVersion = "1.1.0"         // The CSCore version to use.
-    wpiutilVersion = "3.0.0"
-    ctreVersion = "5.2.1.1"        // The CTRE Toolsuite (Talon SRX) version to use.
-    navxVersion = "3.0.346"         // The NavX-MXP library version to use.
-    smartDashboardVersion = '3.0.0'
-    shuffleboardVersion = '1.1.1'
+dependencies {
+    compile 'com.google.protobuf:protobuf-java:2.6.1'
+    compile 'io.grpc:grpc-stub:1.0.0-pre2'
+    compile 'io.grpc:grpc-protobuf:1.0.0-pre2'
+    // https://mvnrepository.com/artifact/org.zeromq/jeromq
+    compile group: 'org.zeromq', name: 'jeromq', version: '0.4.3'
+    compile group : 'com.github.blair-robot-project', name: '449-central-repo', version:'a374778cdf'
+    compile wpi.deps.wpilib()
+    compile wpi.deps.vendor.java()
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 }
 
-dependencies {
-    compile group : 'com.github.blair-robot-project', name: '449-central-repo', version:'25fd20b313'
-    compile wpilib()
-    compile ctre()
-    compile navx()
+protobuf {
+    generatedFilesBaseDir = "$projectDir/gen"
+    protoc {
+        // The artifact spec for the Protobuf Compiler
+        artifact = 'com.google.protobuf:protoc:2.6.1'
+    }
+    plugins {
+        // Optional: an artifact spec for a protoc plugin, with "grpc" as
+        // the identifier, which can be referred to in the "plugins"
+        // container of the "generateProtoTasks" closure.
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.0.0-pre2'
+        }
+    }
+    generateProtoTasks {
+        ofSourceSet('main')*.plugins {
+            // Apply the "grpc" plugin whose spec is defined above, without
+            // options.  Note the braces cannot be omitted, otherwise the
+            // plugin will not be added. This is because of the implicit way
+            // NamedDomainObjectContainer binds the methods.
+            grpc {}
+        }
+    }
+}
+
+/* Utils */
+clean {
+    delete protobuf.generatedFilesBaseDir
+}
+
+idea {
+    module {
+        sourceDirs += file("${protobuf.generatedFilesBaseDir}/main/java")
+    }
 }
 
 /* ssh stuff */
 remotes {
     rio {
-        host = 'roboRIO-'+TEAM+'-frc.local'
+        host = 'roboRIO-449-frc.local'
         user = 'lvuser'
         knownHosts = allowAnyHosts
     }
@@ -68,24 +90,42 @@ task('copyResources') {
     }
 }
 
+// Define my targets (RoboRIO) and artifacts (deployable files)
+// This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
     targets {
-        target("roborio", RoboRIO) {
-            team = TEAM
+        roboRIO("roborio") {
+            // Team number is loaded either from the .wpilib/wpilib_preferences.json
+            // or from command line. If not found an exception will be thrown.
+            // You can use getTeamOrDefault(team) instead of getTeamNumber if you
+            // want to store a team number in this file.
+            team = 449
         }
     }
     artifacts {
-        artifact('frcJava', FRCJavaArtifact) {
+        frcJavaArtifact('frcJava') {
             targets << "roborio"
+            // Debug can be overridden by command line, for use with VSCode
+            debug = frc.getDebugOrDefault(false)
+        }
+        // Built in artifact to deploy arbitrary files to the roboRIO.
+        fileTreeArtifact('frcStaticFileDeploy') {
+            // The directory below is the local directory to deploy
+            files = fileTree(dir: 'src/main/deploy')
+            // Deploy to RoboRIO target, into /home/lvuser/deploy
+            targets << "roborio"
+            directory = '/home/lvuser/deploy'
         }
     }
 }
 
+// Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
+// in order to make them all available at runtime. Also adding the manifest so WPILib
+// knows where to look for our Robot Class.
 jar {
-    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
-
 task genJavadoc(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
@@ -111,6 +151,6 @@ compileJava {
     targetCompatibility = 1.8
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.4'
+wrapper {
+    gradleVersion = '5.0'
 }
