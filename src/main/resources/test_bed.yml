@@ -1,7 +1,7 @@
 ---
 logger:
     '@id': logger
-    subsystems:
+    loggables:
         - org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics:
             '@id': pneumatics
             nodeID: 0
@@ -60,10 +60,6 @@ logger:
             currentLimit: 50
             reverseOutput: false
             reverseSensor: false
-            slaves:
-                - '@id': slave12
-                  port: 12
-                  inverted: true
         - org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
             '@id': talon11
             port: 11
@@ -71,11 +67,7 @@ logger:
             currentLimit: 50
             reverseOutput: false
             reverseSensor: false
-            slaves:
-                - '@id': slave13
-                  port: 13
-                  inverted: true
-    loopTimeSecs: 0.05
+    loopTimeMillis: 50
     eventLogFilename: "/home/lvuser/logs/eventLog-"
     telemetryLogFilename: "/home/lvuser/logs/telemetryLog-"
 buttons:
