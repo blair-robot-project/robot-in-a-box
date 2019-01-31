@@ -251,6 +251,19 @@ defaultCommands:
                     deadband: 0.05
                     smoothingTimeSecs: 0.04
                     inverted: true
+    - subsystem:
+        org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorPosition:
+            '@id': carouselMotorSubsystem
+            motor:
+                org.usfirst.frc.team449.robot.jacksonWrappers.FPSTalon:
+                    carouselMotor
+            maxPos: 99999
+      command:
+        org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.commands.CarouselRotate:
+            '@id': defaultCommand10
+            motor:
+                org.usfirst.frc.team449.robot.subsystem.interfaces.analogMotor.AnalogMotorPosition:
+                    carouselMotorSubsystem
 startupCommand:
     org.usfirst.frc.team449.robot.commands.general.CommandSequence:
         '@id': startupCommand

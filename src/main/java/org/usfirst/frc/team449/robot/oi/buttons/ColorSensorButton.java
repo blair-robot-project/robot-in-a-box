@@ -76,6 +76,7 @@ public class ColorSensorButton extends MappedButton {
 	 */
 	@Override
 	public boolean get() {
+		System.out.println("hi");
 		if (ticks % 20 == 0) {
 			int[] rgb = readRGB();
 			cachedRed = rgb[0];
@@ -87,6 +88,7 @@ public class ColorSensorButton extends MappedButton {
 		if (ALLIANCE_RED) {
 			return cachedBlue > blueThreshold;
 		} else {
+			System.out.println(cachedRed + " > " + redThreshold);
 			return cachedRed > redThreshold;
 		}
 	}
