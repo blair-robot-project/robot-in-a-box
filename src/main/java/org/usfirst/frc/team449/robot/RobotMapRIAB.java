@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * The Jackson-compatible object representing the entire robot.
  */
-public class RobotMap {
+public class RobotMapRIAB {
 
     /**
      * The buttons for controlling this robot. This field only exists to prevent the list from deallocating itself.
@@ -79,14 +79,14 @@ public class RobotMap {
      * @param useCameraServer Whether the camera server should be run. Defaults to false.
      */
     @JsonCreator
-    public RobotMap(@Nullable List<CommandButton> buttons,
-                    @NotNull @JsonProperty(required = true) Logger logger,
-                    @NotNull @JsonProperty(required = true) MappedRunnable updater,
-                    @Nullable List<DefaultCommand> defaultCommands,
-                    @Nullable Command autoStartupCommand,
-                    @Nullable Command teleopStartupCommand,
-                    @Nullable Command startupCommand,
-                    boolean useCameraServer) {
+    public RobotMapRIAB(@Nullable List<CommandButton> buttons,
+                        @NotNull @JsonProperty(required = true) Logger logger,
+                        @NotNull @JsonProperty(required = true) MappedRunnable updater,
+                        @Nullable List<DefaultCommand> defaultCommands,
+                        @Nullable Command autoStartupCommand,
+                        @Nullable Command teleopStartupCommand,
+                        @Nullable Command startupCommand,
+                        boolean useCameraServer) {
         this.buttons = buttons != null ? buttons : new ArrayList<>();
         this.logger = logger;
         this.updater = updater;

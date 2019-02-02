@@ -34,7 +34,7 @@ public class RIAB extends TimedRobot {
     /**
      * The object constructed directly from the yaml map.
      */
-    protected RobotMap robotMap;
+    protected RobotMapRIAB robotMap;
 
     /**
      * Whether or not the robot has been enabled yet.
@@ -72,7 +72,7 @@ public class RIAB extends TimedRobot {
             mapper.registerModule(new WPIModule());
             mapper.registerModule(new JavaModule());
             //Deserialize the map into an object.
-            robotMap = mapper.readValue(fixed, RobotMap.class);
+            robotMap = mapper.readValue(fixed, RobotMapRIAB.class);
         } catch (IOException e) {
             //This is either the map file not being in the file system OR it being improperly formatted.
             System.out.println("Config file is bad/nonexistent!");
