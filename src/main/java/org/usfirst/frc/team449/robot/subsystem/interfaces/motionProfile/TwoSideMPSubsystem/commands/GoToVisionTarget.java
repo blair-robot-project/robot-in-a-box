@@ -91,6 +91,6 @@ public class GoToVisionTarget<T extends Subsystem & SubsystemMPTwoSides & Subsys
      * @return The relative angular distance to the setpoint, in degrees.
      */
     private double getTheta() {
-        return -table.getEntry("yaw").getDouble(0);
+        return -Math.toDegrees(table.getEntry("yaw").getDouble(0));
     }
 }

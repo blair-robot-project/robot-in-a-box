@@ -71,9 +71,19 @@ idea {
 /* ssh stuff */
 remotes {
     rio {
-        host = 'roboRIO-449-frc.local'
+
+        host = 'roboRIO-449-frc.local' // Default, sometimes doesn't work
+//        host = '172.22.11.2' //USB B cable
+        //host = '10.4.49.2' //Radio/ethernet IP
         user = 'lvuser'
         knownHosts = allowAnyHosts
+    }
+
+    jetson {
+        host = '10.4.49.7'
+        user = 'nvidia'
+        knownHosts = allowAnyHosts
+        password = 'nvidia'
     }
 }
 
@@ -85,6 +95,16 @@ task('copyResources') {
                 execute 'mkdir ~/logs', ignoreError: true
                 put from: fileTree('src/main/resources'), into: './449_resources/'
                 execute ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", ignoreError: true
+            }
+        }
+    }
+}
+
+task('startVision') {
+    doLast {
+        ssh.run {
+            session(remotes.jetson) {
+                execute './jetson_vision.sh', ignoreError: true
             }
         }
     }
